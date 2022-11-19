@@ -28,8 +28,7 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserProps>({} as UserProps);
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    clientId:
-      "421720154125-e4i0flv7c633j7dbeu6reh87a5ku6tui.apps.googleusercontent.com",
+    clientId: process.env.CLIENT_ID,
     redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
     scopes: ["profile", "email"],
   });
@@ -65,7 +64,7 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
   }
 
   useEffect(() => {
-    if (response.type === "success" && response.authentication?.accessToken) {
+    if (response?.type === "success" && response.authentication?.accessToken) {
       singInWithGoogle(response.authentication.accessToken);
     }
   }, [response]);
